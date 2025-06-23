@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({ totalEmployees, birthdaysThisMonth }) =
             </h1>
           </div>
           <p className="text-lg text-blue-100 max-w-2xl mx-auto">
-            Never miss a birthday! Track employee celebrations, ages, and company milestones in one beautiful interface.
+            Never miss a birthday! With celebrations, ages, and company milestones in one beautiful interface.
           </p>
         </div>
 
