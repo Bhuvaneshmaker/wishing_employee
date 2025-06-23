@@ -3,106 +3,93 @@ export interface Employee {
   name: string;
   birthday: string; // MM-DD format
   joinDate: string; // YYYY-MM-DD format
-  department: string;
-  position: string;
+
 }
 
 // Mock employee data - In production, this would be imported from Excel
 export const employees: Employee[] = [
   {
     id: 1,
-    name: "Sarah Johnson",
-    birthday: "03-15", // March 15
-    joinDate: "2021-08-12",
-    department: "Human Resources",
-    position: "HR Manager"
+    name: "Hemnath Chandrasekaran",
+    birthday: "09-02", // 2-Sep-1994
+    joinDate: "2017-05-17", //8-May-17
+
   },
   {
     id: 2,
-    name: "Michael Chen",
-    birthday: "07-22", // July 22
-    joinDate: "2020-03-10",
-    department: "Engineering",
-    position: "Senior Software Engineer"
+    name: "K ShyamalaDevi",
+    birthday: "12-07", // 7-Dec-1980
+    joinDate: "2019-10-19", //10-Oct-19
+"
   },
   {
     id: 3,
-    name: "Emily Rodriguez",
-    birthday: "11-08", // November 8
-    joinDate: "2022-01-15",
-    department: "Marketing",
-    position: "Marketing Specialist"
+    name: "Muthamma Pandu",
+    birthday: "02-06", // 6-Feb-1970
+    joinDate: "2022-01-15", //1-Feb-20
+
   },
   {
     id: 4,
-    name: "David Thompson",
-    birthday: "05-03", // May 3
-    joinDate: "2019-11-20",
-    department: "Finance",
-    position: "Financial Analyst"
+    name: "Venkatesh Arumugam",
+    birthday: "12-17", // 17-Dec-1999
+    joinDate: "2020-11-05", //5-Nov-20
+
   },
   {
     id: 5,
-    name: "Lisa Park",
-    birthday: "09-17", // September 17
-    joinDate: "2021-06-01",
-    department: "Design",
-    position: "UX Designer"
+    name: "Lokesh Venkatesan",
+    birthday: "05-10", // 10-May-1996
+    joinDate: "2020-12-01", // 1-Dec-20
+
   },
   {
     id: 6,
-    name: "James Wilson",
-    birthday: "12-25", // December 25
-    joinDate: "2020-09-08",
-    department: "Sales",
-    position: "Sales Manager"
+    name: "Rathinavel Palaniyandi",
+    birthday: "07-07", // 7-Jul-1995
+    joinDate:"2020-12-01", // 1-Dec-20
+
   },
   {
     id: 7,
-    name: "Amanda Davis",
-    birthday: "02-14", // February 14
-    joinDate: "2022-04-18",
-    department: "Operations",
-    position: "Operations Coordinator"
+    name: "S.Karthik",
+    birthday: "04-22", // 22-Apr-1998
+    joinDate: "2021-04-02", //2-Apr-21
+
   },
   {
     id: 8,
-    name: "Robert Kim",
-    birthday: "08-30", // August 30
-    joinDate: "2019-07-12",
-    department: "Engineering",
-    position: "DevOps Engineer"
+    name: "S. Shunmugaraj",
+    birthday: "02-16", // 16-Feb-1992
+    joinDate: "2021-08-23", //23-Aug-21
+
   },
   {
     id: 9,
-    name: "Jennifer Adams",
-    birthday: "04-12", // April 12
-    joinDate: "2021-10-25",
-    department: "Customer Success",
-    position: "Customer Success Manager"
+    name: "",
+    birthday: "04-04", // 4-Apr-2002
+    joinDate: "2021-09-20", //20-Sep-21
+
   },
   {
     id: 10,
-    name: "Thomas Brown",
-    birthday: "06-28", // June 28
-    joinDate: "2020-12-03",
-    department: "Legal",
-    position: "Legal Counsel"
+    name: "P. Yuvarajasekar",
+    birthday: "02-01", // 1-Feb-2000
+    joinDate: "2021-11-08", //8-Nov-21
+
   },
   {
     id: 11,
-    name: "Maria Garcia",
-    birthday: "01-09", // January 9
-    joinDate: "2022-08-14",
-    department: "Marketing",
-    position: "Content Manager"
+    name: "P. Sudhakar",
+    birthday: "01-09", // 28-Oct-1988
+    joinDate: "2021-11-10", //10-Nov-21
+
   },
   {
     id: 12,
-    name: "Kevin Lee",
-    birthday: "10-19", // October 19
-    joinDate: "2021-02-28",
-    department: "IT Support",
-    position: "IT Specialist"
+    name: "Ramkumar",
+    birthday: "02-24", //24-Feb-1995
+    joinDate: "2021-11-01",//1-Nov-21
+
   }
 ];
