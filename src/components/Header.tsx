@@ -16,7 +16,7 @@ const Header: React.FC<HeaderProps> = ({ totalEmployees, birthdaysThisMonth }) =
               <Cake className="w-8 h-8" />
             </div>
             <h1 className="text-3xl md:text-4xl font-bold">
-              Employee Birthday Tracker
+              Employee Birthday
             </h1>
           </div>
           <p className="text-lg text-blue-100 max-w-2xl mx-auto">
