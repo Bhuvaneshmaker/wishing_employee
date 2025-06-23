@@ -153,11 +153,9 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
                   </div>
                 </div>
               );
-            )
+            
           </div>
-        )
+        
       </div>
-  );
-};
-
+  ))}
 export default EmployeeDetails;
