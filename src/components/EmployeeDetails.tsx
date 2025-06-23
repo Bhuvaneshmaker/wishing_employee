@@ -115,7 +115,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
                     </div>
                     <div>
                       <h4 className="text-xl font-bold text-gray-800">{employee.name}</h4>
-                      <p className="text-orange-600 font-medium">{employee.position}</p>
                     </div>
                   </div>
 
@@ -137,10 +136,6 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
                     <div className="bg-white rounded-lg p-4 border border-gray-200">
                       <div className="flex items-center gap-2 mb-2">
                         <Briefcase className="w-5 h-5 text-blue-600" />
-                        <span className="font-semibold text-gray-700">Department</span>
-                      </div>
-                      <p className="text-lg font-medium text-blue-600">{employee.department}</p>
-                    </div>
 
                     <div className="bg-white rounded-lg p-4 border border-gray-200 md:col-span-2">
                       <div className="flex items-center gap-2 mb-2">
