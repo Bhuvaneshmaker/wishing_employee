@@ -4,7 +4,7 @@ import { User, Calendar, Briefcase, Gift, PartyPopper } from 'lucide-react';
 interface Employee {
   id: number;
   name: string;
-  birthday: string; // MM-DD format
+  birthday: string; // MM-DD-YYYY format
   joinDate: string; // YYYY-MM-DD format
 }
 
