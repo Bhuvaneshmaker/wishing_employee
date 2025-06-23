@@ -20,7 +20,7 @@ export const employees: Employee[] = [
     name: "K ShyamalaDevi",
     birthday: "12-07", // 7-Dec-1980
     joinDate: "2019-10-19", //10-Oct-19
-"
+    
   },
   {
     id: 3,
