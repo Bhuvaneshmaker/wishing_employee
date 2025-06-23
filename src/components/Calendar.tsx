@@ -8,9 +8,9 @@ interface Employee {
   joinDate: string; // YYYY-MM-DD format
 },
 interface CalendarProps {
-  selectedDate: Date | null;
-  onDateSelect: (date: Date) => void;
-  employees: Employee[];
+   selectedDate: Date | null;
+   onDateSelect: (date: Date) => void;
+   employees: Employee[];
 }
 
 const Calendar: React.FC<CalendarProps> = ({ selectedDate, onDateSelect, employees }) => {
