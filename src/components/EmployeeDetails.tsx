@@ -4,8 +4,10 @@ import { User, Calendar, Briefcase, Gift, PartyPopper } from 'lucide-react';
 interface Employee {
   id: number;
   name: string;
-  birthday: string; // MM-DD-YYYY format
+  birthday: string; // MM-DD format
   joinDate: string; // YYYY-MM-DD format
+  department: string;
+  position: string;
 }
 
 interface EmployeeDetailsProps {
@@ -29,19 +31,12 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
   const selectedMonthDay = `${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
   const birthdayEmployees = employees.filter(emp => emp.birthday === selectedMonthDay);
 
-const calculateAge = (birthDate: string, currentYear: number) => {
+  const calculateAge = (birthDate: string, currentYear: number) => {
     const [month, day] = birthDate.split('-').map(Number);
-    const currentDate = new Date(currentYear, 0); // January 1st of the current year
-    const birthYear = new Date().getFullYear() - currentYear; // Mock birth year
-    // Create a date object for the birth date
-    const birthDateObj = new Date(birthYear, month - 1, day);
-    // Calculate age
-    let age = currentYear - birthYear;
-
-    if (currentDate < birthDateObj) {
-        age--;
-    }
-    return age;
+    const birthYear = new Date().getFullYear() - Math.floor(Math.random() * 40) - 25; // Mock birth year
+    const currentDate = new Date(currentYear, month - 1, day);
+    return currentYear - birthYear;
+  };
 
   const calculateTenure = (joinDate: string) => {
     const joinDateTime = new Date(joinDate);
@@ -111,17 +106,18 @@ const calculateAge = (birthDate: string, currentYear: number) => {
             </div>
 
             {birthdayEmployees.map((employee) => {
-              const age = calculateAge(employee.birthday);
+              const age = calculateAge(employee.birthday, selectedDate.getFullYear());
               const tenure = calculateTenure(employee.joinDate);
               
               return (
                 <div key={employee.id} className="bg-gradient-to-br from-orange-50 to-pink-50 rounded-lg p-6 border border-orange-200">
                   <div className="flex items-center gap-4 mb-4">
                     <div className="bg-gradient-to-br from-orange-400 to-pink-500 rounded-full p-3">
-                      <User  className="w-6 h-6 text-white" />
+                      <User className="w-6 h-6 text-white" />
                     </div>
                     <div>
                       <h4 className="text-xl font-bold text-gray-800">{employee.name}</h4>
+                      <p className="text-orange-600 font-medium">{employee.position}</p>
                     </div>
                   </div>
 
@@ -135,7 +131,7 @@ const calculateAge = (birthDate: string, currentYear: number) => {
                     <div className="bg-white rounded-lg p-4 border border-gray-200">
                       <div className="flex items-center gap-2 mb-2">
                         <Gift className="w-5 h-5 text-purple-600" />
-                        <span className="font-semibold text-gray-700">Loving Age :</span>
+                        <span className="font-semibold text-gray-700">Age</span>
                       </div>
                       <p className="text-2xl font-bold text-purple-600">{age} years old</p>
                     </div>
@@ -143,22 +139,22 @@ const calculateAge = (birthDate: string, currentYear: number) => {
                     <div className="bg-white rounded-lg p-4 border border-gray-200">
                       <div className="flex items-center gap-2 mb-2">
                         <Briefcase className="w-5 h-5 text-blue-600" />
-                        <span className="font-semibold text-gray-700">Company Tenure :</span>
+                        <span className="font-semibold text-gray-700">Department</span>
                       </div>
-                      <p className="text-lg font-medium text-blue-600">{tenure}</p>
+                      <p className="text-lg font-medium text-blue-600">{employee.department}</p>
                     </div>
 
                     <div className="bg-white rounded-lg p-4 border border-gray-200 md:col-span-2">
                       <div className="flex items-center gap-2 mb-2">
                         <Calendar className="w-5 h-5 text-green-600" />
-                        <span className="font-semibold text-gray-700">Joined :</span>
+                        <span className="font-semibold text-gray-700">Company Tenure</span>
                       </div>
                       <p className="text-lg font-medium text-green-600">
-                        {new Date(employee.joinDate).toLocaleDateString('en-US', {
+                        {tenure} (Joined: {new Date(employee.joinDate).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
                           day: 'numeric'
-                        })}
+                        })})
                       </p>
                     </div>
                   </div>
