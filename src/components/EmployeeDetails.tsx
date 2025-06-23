@@ -29,17 +29,20 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
   const selectedMonthDay = `${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
   const birthdayEmployees = employees.filter(emp => emp.birthday === selectedMonthDay);
 
-  const calculateAge = (birthDate: string) => {
-    const [month, day] = birthDate.split('-').map(Number);
-    const today = new Date();
-    const birthYear = today.getFullYear() - Math.floor(Math.random() * 40) - 25; // Mock birth year
-    const birthDateTime = new Date(birthYear, month - 1, day);
-    let age = today.getFullYear() - birthDateTime.getFullYear();
-    if (today < new Date(today.getFullYear(), month - 1, day)) {
-      age;
-    }
-    return age;
-  };
+const calculateAge = (birthDate: string, birthYear: number) => {
+  const [month, day] = birthDate.split('-').map(Number);
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const hasBirthdayOccurred = (
+    today.getMonth() > month - 1 || 
+    (today.getMonth() === month - 1 && today.getDate() >= day)
+  );
+
+  const age = hasBirthdayOccurred 
+    ? currentYear - birthYear 
+    : currentYear - birthYear - 1;
+  return age;
+};
 
   const calculateTenure = (joinDate: string) => {
     const joinDateTime = new Date(joinDate);
