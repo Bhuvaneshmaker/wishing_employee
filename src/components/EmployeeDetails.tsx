@@ -36,7 +36,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
     const birthDateTime = new Date(birthYear, month - 1, day);
     let age = today.getFullYear() - birthDateTime.getFullYear();
     if (today < new Date(today.getFullYear(), month - 1, day)) {
-      age--;
+      age;
     }
     return age;
   };
