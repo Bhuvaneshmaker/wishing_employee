@@ -128,7 +128,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
                     <div className="bg-white rounded-lg p-4 border border-gray-200">
                       <div className="flex items-center gap-2 mb-2">
                         <Gift className="w-5 h-5 text-purple-600" />
-                        <span className="font-semibold text-gray-700">Age</span>
+                        <span className="font-semibold text-gray-700">Loving Age :</span>
                       </div>
                       <p className="text-2xl font-bold text-purple-600">{age} years old</p>
                     </div>
@@ -153,11 +153,10 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
                   </div>
                 </div>
               );
-            })}
+            )
           </div>
-        )}
+        )
       </div>
-    </div>
   );
 };
 
