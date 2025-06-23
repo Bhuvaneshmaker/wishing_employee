@@ -6,9 +6,7 @@ interface Employee {
   name: string;
   birthday: string; // MM-DD format
   joinDate: string; // YYYY-MM-DD format
-  department: string;
-  position: string;
-}
+
 
 interface CalendarProps {
   selectedDate: Date | null;
