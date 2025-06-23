@@ -6,9 +6,9 @@ interface Employee {
   name: string;
   birthday: string; // MM-DD format
   joinDate: string; // YYYY-MM-DD format
-}
 
-interface CalendarProps {
+
+interface CalendarProps 
   selectedDate: Date | null;
   onDateSelect: (date: Date) => void;
   employees: Employee[];
