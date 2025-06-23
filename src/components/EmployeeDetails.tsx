@@ -29,62 +29,46 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
   const selectedMonthDay = `${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
   const birthdayEmployees = employees.filter(emp => emp.birthday === selectedMonthDay);
 
-{birthdayEmployees.map((employee) => {
-  const age = calculateAge(employee.birthday, employee.birthYear);
-  const tenure = calculateTenure(employee.joinDate);
-  
-  return (
-    <div key={employee.id} className="bg-gradient-to-br from-orange-50 to-pink-50 rounded-lg p-6 border border-orange-200">
-      <div className="flex items-center gap-4 mb-4">
-        <div className="bg-gradient-to-br from-orange-400 to-pink-500 rounded-full p-3">
-          <User  className="w-6 h-6 text-white" />
-        </div>
-        <div>
-          <h4 className="text-xl font-bold text-gray-800">{employee.name}</h4>
-        </div>
-      </div>
+  const calculateAge = (birthDate: string) => {
+    const [month, day] = birthDate.split('-').map(Number);
+    const today = new Date();
+    const birthYear = today.getFullYear() - Math.floor(Math.random() * 40) - 25; // Mock birth year
+    const birthDateTime = new Date(birthYear, month - 1, day);
+    let age = today.getFullYear() - birthDateTime.getFullYear();
+    if (today < new Date(today.getFullYear(), month - 1, day)) {
+      age--;
+    }
+    return age;
+  };
 
-      <div className="bg-white rounded-lg p-4 mb-4 border border-orange-100">
-        <p className="text-lg font-medium text-gray-800 leading-relaxed">
-          {getBirthdayMessage(employee.name, age)}
-        </p>
-      </div>
+  const calculateTenure = (joinDate: string) => {
+    const joinDateTime = new Date(joinDate);
+    const now = new Date();
+    const years = now.getFullYear() - joinDateTime.getFullYear();
+    const months = now.getMonth() - joinDateTime.getMonth();
+    
+    let totalMonths = years * 12 + months;
+    if (now.getDate() < joinDateTime.getDate()) {
+      totalMonths--;
+    }
+    
+    const tenureYears = Math.floor(totalMonths / 12);
+    const tenureMonths = totalMonths % 12;
+    
+    if (tenureYears > 0) {
+      return `${tenureYears} year${tenureYears > 1 ? 's' : ''} ${tenureMonths > 0 ? `and ${tenureMonths} month${tenureMonths > 1 ? 's' : ''}` : ''}`;
+    }
+    return `${tenureMonths} month${tenureMonths > 1 ? 's' : ''}`;
+  };
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <div className="flex items-center gap-2 mb-2">
-            <Gift className="w-5 h-5 text-purple-600" />
-            <span className="font-semibold text-gray-700">Loving Age :</span>
-          </div>
-          <p className="text-2xl font-bold text-purple-600">{age} years old</p>
-        </div>
-
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <div className="flex items-center gap-2 mb-2">
-            <Briefcase className="w-5 h-5 text-blue-600" />
-            <span className="font-semibold text-gray-700">Company Tenure :</span>
-          </div>
-          <p className="text-lg font-medium text-blue-600">{tenure}</p>
-        </div>
-
-        <div className="bg-white rounded-lg p-4 border border-gray-200 md:col-span-2">
-          <div className="flex items-center gap-2 mb-2">
-            <Calendar className="w-5 h-5 text-green-600" />
-            <span className="font-semibold text-gray-700">Joined :</span>
-          </div>
-          <p className="text-lg font-medium text-green-600">
-            {new Date(employee.joinDate).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-})}
-
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
 
   const getBirthdayMessage = (name: string, age: number) => {
     const messages = [
