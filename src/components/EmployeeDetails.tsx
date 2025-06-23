@@ -29,11 +29,16 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
   const selectedMonthDay = `${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
   const birthdayEmployees = employees.filter(emp => emp.birthday === selectedMonthDay);
 
-  const calculateAge = (birthDate: string, currentYear: number) => {
+  const calculateAge = (birthDate: string) => {
     const [month, day] = birthDate.split('-').map(Number);
-    const birthYear = new Date().getFullYear() - Math.floor(Math.random() * 40) - 25; // Mock birth year
-    const currentDate = new Date(currentYear, month - 1, day);
-    return currentYear - birthYear;
+    const today = new Date();
+    const birthYear = today.getFullYear() - Math.floor(Math.random() * 40) - 25; // Mock birth year
+    const birthDateTime = new Date(birthYear, month - 1, day);
+    let age = today.getFullYear() - birthDateTime.getFullYear();
+    if (today < new Date(today.getFullYear(), month - 1, day)) {
+      age--;
+    }
+    return age;
   };
 
   const calculateTenure = (joinDate: string) => {
@@ -104,14 +109,14 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
             </div>
 
             {birthdayEmployees.map((employee) => {
-              const age = calculateAge(employee.birthday, selectedDate.getFullYear());
+              const age = calculateAge(employee.birthday);
               const tenure = calculateTenure(employee.joinDate);
               
               return (
                 <div key={employee.id} className="bg-gradient-to-br from-orange-50 to-pink-50 rounded-lg p-6 border border-orange-200">
                   <div className="flex items-center gap-4 mb-4">
                     <div className="bg-gradient-to-br from-orange-400 to-pink-500 rounded-full p-3">
-                      <User className="w-6 h-6 text-white" />
+                      <User  className="w-6 h-6 text-white" />
                     </div>
                     <div>
                       <h4 className="text-xl font-bold text-gray-800">{employee.name}</h4>
@@ -136,27 +141,33 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
                     <div className="bg-white rounded-lg p-4 border border-gray-200">
                       <div className="flex items-center gap-2 mb-2">
                         <Briefcase className="w-5 h-5 text-blue-600" />
+                        <span className="font-semibold text-gray-700">Company Tenure :</span>
+                      </div>
+                      <p className="text-lg font-medium text-blue-600">{tenure}</p>
+                    </div>
 
                     <div className="bg-white rounded-lg p-4 border border-gray-200 md:col-span-2">
                       <div className="flex items-center gap-2 mb-2">
                         <Calendar className="w-5 h-5 text-green-600" />
-                        <span className="font-semibold text-gray-700">Company Tenure</span>
+                        <span className="font-semibold text-gray-700">Joined :</span>
                       </div>
                       <p className="text-lg font-medium text-green-600">
-                        {tenure} (Joined: {new Date(employee.joinDate).toLocaleDateString('en-US', {
+                        {new Date(employee.joinDate).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
                           day: 'numeric'
-                        })})
+                        })}
                       </p>
                     </div>
                   </div>
                 </div>
               );
-            
+            })}
           </div>
-        
+        )}
       </div>
-  ));
-}
+    </div>
+  );
+};
+
 export default EmployeeDetails;
