@@ -8,7 +8,7 @@ interface Employee {
   joinDate: string; // YYYY-MM-DD format
 
 
-interface CalendarProps 
+interface CalendarProps {
   selectedDate: Date | null;
   onDateSelect: (date: Date) => void;
   employees: Employee[];
