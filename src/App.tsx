@@ -407,7 +407,7 @@ const getYearsOfService = (joinDate) => {
                     <div key={day} className="calendar-day-header">{day}</div>
                   ))}
                 </div>
-                <div className="calendar-body text-black">
+                <div className="calendar-body text-white">
                   {renderCalendar()}
                 </div>
               </div>
