@@ -6,8 +6,6 @@ interface Employee {
   name: string;
   birthday: string; // MM-DD format
   joinDate: string; // YYYY-MM-DD format
-  department: string;
-  position: string;
 }
 
 interface EmployeeDetailsProps {
@@ -33,7 +31,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
 
   const calculateAge = (birthDate: string, currentYear: number) => {
     const [month, day] = birthDate.split('-').map(Number);
-    const birthYear = new Date().getFullYear() - Math.floor(Math.random() * 40) - 25; // Mock birth year
+    const birthYear = new Date().getFullYear() - currentYear; // Mock birth year
     const currentDate = new Date(currentYear, month - 1, day);
     return currentYear - birthYear;
   };
@@ -75,7 +73,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
       `🎈 Here's to ${age} years of greatness and many more to come! Happy Birthday, ${name}!`,
       `🎊 ${name}, may your ${age}th year be filled with joy, success, and happiness!`
     ];
-    return messages[Math.floor(Math.random() * messages.length)];
+    return messages;
   };
 
   return (
@@ -117,7 +115,7 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
                     </div>
                     <div>
                       <h4 className="text-xl font-bold text-gray-800">{employee.name}</h4>
-                      <p className="text-orange-600 font-medium">{employee.position}</p>
+                     
                     </div>
                   </div>
 
@@ -139,9 +137,9 @@ const EmployeeDetails: React.FC<EmployeeDetailsProps> = ({ employees, selectedDa
                     <div className="bg-white rounded-lg p-4 border border-gray-200">
                       <div className="flex items-center gap-2 mb-2">
                         <Briefcase className="w-5 h-5 text-blue-600" />
-                        <span className="font-semibold text-gray-700">Department</span>
+                        
                       </div>
-                      <p className="text-lg font-medium text-blue-600">{employee.department}</p>
+                     
                     </div>
 
                     <div className="bg-white rounded-lg p-4 border border-gray-200 md:col-span-2">
