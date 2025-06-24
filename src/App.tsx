@@ -287,7 +287,7 @@ return (
       <div className="row">
         {/* Calendar */}
         <div className="col-lg-8 mb-6">
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-black rounded-lg shadow-md p-6">
             <div className="d-flex justify-between items-center mb-4">
               <button className="btn btn-outline-primary" onClick={() => changeMonth(-1)}>
                 ← Previous
@@ -314,8 +314,8 @@ return (
         {/* Selected Date: Birthdays */}
         <div className='birth'>
         <div className="col-lg-4 mb-4">
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+          <div className="bg-black rounded-lg shadow-md p-6">
+            <h3 className="text-white-xl font-semibold mb-3 flex items-center gap-2">
               <Calendar className="text-blue-600" />
               {selectedDate.toLocaleDateString('en-US', {
                 weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
