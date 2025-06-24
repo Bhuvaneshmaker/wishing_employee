@@ -67,7 +67,7 @@ const EmployeeBirthdayApp = () => {
 
 const fetchExcelFile = async () => {
     try {
-      const response = await fetch('src/data/employee_detail.xlsx');
+      const response = await fetch('src/data/employee_detail.js');
       const arrayBuffer = await response.arrayBuffer();
       const workbook = XLSX.read(arrayBuffer, { type: 'array' });
 
