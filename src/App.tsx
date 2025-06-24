@@ -390,7 +390,7 @@ const getYearsOfService = (joinDate) => {
                 >
                   ← Previous
                 </button>
-                <h3 className="text-xl-blue font-semibold text-center">
+                <h3 className="text-xl font-semibold text-center-black">
                   {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                 </h3>
                 <button 
