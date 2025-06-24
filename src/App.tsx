@@ -382,7 +382,7 @@ const getYearsOfService = (joinDate) => {
         {/* Calendar */}
 
           <div className="col-lg-8 mb-6">
-            <div className="bg-black rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6">
               <div className="d-flex justify-content-between align-items-center mb-4">
                 <button 
                   className="btn btn-outline-primary"
