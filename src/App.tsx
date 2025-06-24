@@ -292,7 +292,7 @@ return (
               <button className="btn btn-outline-primary" onClick={() => changeMonth(-1)}>
                 ← Previous
               </button>
-              <h3 className="text-xl font-semibold text-center">
+              <h3 className="text-black-xl font-semibold text-center">
                 {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
               </h3>
               <button className="btn btn-outline-primary" onClick={() => changeMonth(1)}>
