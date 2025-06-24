@@ -355,7 +355,7 @@ return (
         {/* Selected Date: Work Anniversaries */}
         <div className='contain'>
         <div className="col-lg-4 mb-4">
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-black rounded-lg shadow-md p-6">
             <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
               <Calendar className="text-blue-600" />
               {selectedDate.toLocaleDateString('en-US', {
@@ -398,7 +398,7 @@ return (
         {/* Stats details  */}
         <div className='stats'>
         <div className="col-lg-4 mb-4">
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-black rounded-lg shadow-md p-6">
             <h4 className="text-lg font-semibold mb-3">📊 Quick Stats</h4>
             <div className="space-y-2">
               <p className="text-sm">
