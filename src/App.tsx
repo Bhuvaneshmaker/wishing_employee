@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Gift, Users, Cake, Heart, Star } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import './App.css';
-import sampleEmployees from '.src/data/employee_detail.js';
+import sampleEmployees from './data/employee_detail.js';
 
 const EmployeeBirthdayApp = () => {
   const [employees, setEmployees] = useState([]);
