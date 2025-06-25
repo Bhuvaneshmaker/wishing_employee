@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Gift, Users, Cake, Heart, Star } from 'lucide-react';
 import * as XLSX from 'xlsx';
 import './App.css';
-import sampleEmployees from './data/employee_detail.js';
+import sampleEmployees from './data/employee_details';
 
 const EmployeeBirthdayApp = () => {
   const [employees, setEmployees] = useState([]);
@@ -12,6 +12,12 @@ const EmployeeBirthdayApp = () => {
   const [todaysBirthdays, setTodaysBirthdays] = useState([]);
   const [todayJoin, setTodayJoin] = useState([]);
   const [joinEmployee, setJoinEmployee] = useState([]);
+  const [addEmployee, setAddEmployee] = useState({
+    id: '',
+    name: '',
+    birthday: '',
+    joinDate: ''
+  });
 
   useEffect(() => {
     setEmployees(sampleEmployees);
@@ -23,18 +29,21 @@ const EmployeeBirthdayApp = () => {
     filterBirthdaysByDate(selectedDate);
     filterJoinEmployee(selectedDate);
   }, [selectedDate, employees]);
-
-  // to use fetch data from the excel or data.js
+ 
+  useEffect(() => {
+    setEmployees(sampleEmployees)
+    fetchExcelFile();
+  }, []);
+      // To take the excel and get the data and details from the excel
   const fetchExcelFile = async () => {
     try {
-      const response = await fetch('src/data/employee_detail.js');
+      const response = await fetch('/employee_detail.xlsx');
       const arrayBuffer = await response.arrayBuffer();
       const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
       const jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
 
-      const formattedData = jsonData.map(row => {
+      const formattedData = jsonData.map((row) => {
         const joinDate = parseExcelDate(row['Join Date'] || row.joinDate || '');
         const birthday = parseExcelDate(row['Birthday'] || row.birthday || row.DOB || '');
         return {
@@ -51,24 +60,36 @@ const EmployeeBirthdayApp = () => {
       checkTodaysBirthdays(formattedData);
       checkTodayJoin(formattedData);
     } catch (error) {
-      console.error('Error reading Excel file:', error);
+      console.error('Error reading Excel file, falling back to sample data:', error);
+      setEmployees(sampleEmployees);
     }
   };
 
-  useEffect(() => {
-    fetchExcelFile();
-  }, []);
+const parseExcelDate = (excelDate) => {
+  if (!excelDate) return '';
+  if (typeof excelDate === 'string') return new Date(excelDate).toISOString().split('T')[0];
+  const date = XLSX.SSF.parse_date_code(excelDate);
+  if (!date) return '';
+  return `${date.y}-${String(date.m).padStart(2, '0')}-${String(date.d).padStart(2, '0')}`;
+};
 
-  const parseExcelDate = (excelDate) => {
-    if (!excelDate) return '';
-    if (typeof excelDate === 'string') return excelDate;
-    const date = XLSX.SSF.parse_date_code(excelDate);
-    if (!date) return '';
-    return `${date.y}-${String(date.m).padStart(2, '0')}-${String(date.d).padStart(2, '0')}`;
+    // this using to add new employee and their information
+  const handleAddEmployee = (e) => {
+    e.preventDefault();
+    const newEmployee = {
+      ...addEmployee,
+      isAnniversary: isTodayAnniversary(addEmployee.joinDate),
+      yearsOfService: getYearsOfService(addEmployee.joinDate)
+    };
+    const newList = [...employees, newEmployee];
+    setEmployees(newList);
+    checkTodayJoin(newList);
+    checkTodaysBirthdays(newList);
+    filterJoinEmployee(selectedDate);
+    filterBirthdaysByDate(selectedDate);
+    setAddEmployee({ id: '', name: '', birthday: '', joinDate: '' });
   };
-
-    // to calculate the age of the person and the birthday
-
+// the person age should calculateing using the function
   const calculateAge = (birthday) => {
     const today = new Date();
     const birthDate = new Date(birthday);
@@ -79,9 +100,7 @@ const EmployeeBirthdayApp = () => {
     }
     return age;
   };
-
-  // the employee with number of years works here
-
+// the person joined on work calculate using this function
   const getYearsOfService = (joinDate) => {
     const today = new Date();
     const joined = new Date(joinDate);
@@ -94,84 +113,71 @@ const EmployeeBirthdayApp = () => {
     }
     return years;
   };
-
-  // to check and confirm if the birthday is or not
+// this function using for check any person's birthday today
   const checkTodaysBirthdays = (list) => {
     const today = new Date();
-    const todayMonth = today.getMonth();
-    const todayDate = today.getDate();
-    const birthdays = list.filter(emp => {
-      const empBirthday = new Date(emp.birthday);
-      return empBirthday.getMonth() === todayMonth && empBirthday.getDate() === todayDate;
-    });
-    setTodaysBirthdays(birthdays);
+    setTodaysBirthdays(
+      list.filter((emp) => {
+        const date = new Date(emp.birthday);
+        return date.getDate() === today.getDate() && date.getMonth() === today.getMonth();
+      })
+    );
   };
-
-  // to check the join date here
-
+// this is using for the employee where join on the date 
   const checkTodayJoin = (list) => {
     const today = new Date();
-    const todayMonth = today.getMonth();
-    const todayDate = today.getDate();
-    const joins = list.filter(emp => {
-      const empJoin = new Date(emp.joinDate);
-      return empJoin.getMonth() === todayMonth && empJoin.getDate() === todayDate;
-    });
-    setTodayJoin(joins);
+    setTodayJoin(
+      list.filter((emp) => {
+        const date = new Date(emp.joinDate);
+        return date.getDate() === today.getDate() && date.getMonth() === today.getMonth();
+      })
+    );
   };
-
-  // filter from the excel and render calender for birthday
+// filter the birthday date
   const filterBirthdaysByDate = (date) => {
-    const month = date.getMonth();
-    const day = date.getDate();
-    const birthdays = employees.filter(emp => {
-      const empBirthday = new Date(emp.birthday);
-      return empBirthday.getMonth() === month && empBirthday.getDate() === day;
-    });
-    setBirthdayEmployees(birthdays);
+    setBirthdayEmployees(
+      employees.filter((emp) => {
+        const d = new Date(emp.birthday);
+        return d.getDate() === date.getDate() && d.getMonth() === date.getMonth();
+      })
+    );
   };
-
-  // filter from the excel and render calender for Join date
+//filter the joined date
   const filterJoinEmployee = (date) => {
-    const month = date.getMonth();
-    const day = date.getDate();
-    const joins = employees.filter(emp => {
-      const empJoinDate = new Date(emp.joinDate);
-      return empJoinDate.getMonth() === month && empJoinDate.getDate() === day;
-    });
-    setJoinEmployee(joins);
+    setJoinEmployee(
+      employees.filter((emp) => {
+        const d = new Date(emp.joinDate);
+        return d.getDate() === date.getDate() && d.getMonth() === date.getMonth();
+      })
+    );
   };
-
-  // to make the date is joined
+// were anybody joined celebrate
   const isTodayAnniversary = (dateStr) => {
     if (!dateStr) return false;
     const today = new Date();
     const date = new Date(dateStr);
     return today.getDate() === date.getDate() && today.getMonth() === date.getMonth();
   };
-
-  // the person has celebrate birthday
+// were anybody celeberate birthday today or not
   const hasBirthdayOnDate = (day) => {
     const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-    return employees.some(emp => {
-      const bday = new Date(emp.birthday);
-      return bday.getDate() === date.getDate() && bday.getMonth() === date.getMonth();
+    return employees.some((emp) => {
+      const d = new Date(emp.birthday);
+      return d.getDate() === date.getDate() && d.getMonth() === date.getMonth();
     });
   };
-
-  // the join confirm to show the date on calender
+// were anyboby joined 
   const isJoinDate = (day) => {
     const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-    return employees.some(emp => {
-      const jDate = new Date(emp.joinDate);
-      return jDate.getDate() === date.getDate() && jDate.getMonth() === date.getMonth() ;
+    return employees.some((emp) => {
+      const d = new Date(emp.joinDate);
+      return d.getDate() === date.getDate() && d.getMonth() === date.getMonth();
     });
   };
 
   const getDaysInMonth = (date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-
   const getFirstDayOfMonth = (date) => new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-
+// for calender detils
   const renderCalendar = () => {
     const days = [];
     const daysInMonth = getDaysInMonth(currentMonth);
@@ -182,7 +188,8 @@ const EmployeeBirthdayApp = () => {
     }
 
     for (let day = 1; day <= daysInMonth; day++) {
-      const isSelected = selectedDate.getDate() === day &&
+      const isSelected =
+        selectedDate.getDate() === day &&
         selectedDate.getMonth() === currentMonth.getMonth() &&
         selectedDate.getFullYear() === currentMonth.getFullYear();
 
@@ -193,11 +200,13 @@ const EmployeeBirthdayApp = () => {
         <div
           key={day}
           className={`calendar-day ${isSelected ? 'selected' : ''} ${hasBday ? 'has-birthday' : ''}`}
-          onClick={() => setSelectedDate(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day))}
+          onClick={() =>
+            setSelectedDate(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day))
+          }
         >
           {day}
-          {hasBday && <div className="birthday-indicator" style={{fontSize:'30px'}}>🎂</div>}
-          {hasJoin && <div className="join-indicator" style={{fontSize:'30px'}}>⭐</div>}
+          {hasBday && <div className="birthday-indicator" style={{ fontSize: '30px' }}>🎂</div>}
+          {hasJoin && <div className="join-indicator" style={{ fontSize: '30px' }}>⭐</div>}
         </div>
       );
     }
@@ -218,7 +227,6 @@ const EmployeeBirthdayApp = () => {
       year: 'numeric'
     });
 
-
 return (
   <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-100">
     <div className="container mx-auto px-4 py-8 text-center">
@@ -232,9 +240,12 @@ return (
         </h1>
         <p className="text-gray-600">We always remember your birthday celebration!</p>
       </div>
+          {/* end of header */}
 
       {/* Today's Birthdays */}
+
       {todaysBirthdays.length > 0 && (
+        <div className='today'>
         <div className="bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg shadow-lg p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
             <Star className="text-yellow-300" />
@@ -256,10 +267,13 @@ return (
             ))}
           </div>
         </div>
+      </div>
       )}
+      {/* end of birthday */}
 
       {/* Today's Work Anniversaries */}
       {todayJoin.length > 0 && (
+        <div className='join'>
         <div className="bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg shadow-lg p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
             <Star className="text-yellow-300" />
@@ -281,18 +295,21 @@ return (
             ))}
           </div>
         </div>
+      </div>
+    
       )}
+        {/* end of today annivesary */}
 
       {/* Calendar and that thing of alginment */}
       <div className="row">
         {/* Calendar */}
         <div className="col-lg-8 mb-6">
-          <div className="bg-black rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-6">
             <div className="d-flex justify-between items-center mb-4">
               <button className="btn btn-outline-primary" onClick={() => changeMonth(-1)}>
                 ← Previous
               </button>
-              <h3 className="text-white-xl font-semibold text-center">
+              <h3 className="text-xl font-semibold text-center">
                 {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
               </h3>
               <button className="btn btn-outline-primary" onClick={() => changeMonth(1)}>
@@ -310,12 +327,14 @@ return (
             </div>
           </div>
         </div>
+                {/* end of calender */}
+
 
         {/* Selected Date: Birthdays */}
         <div className='birth'>
         <div className="col-lg-4 mb-4">
-          <div className="bg-black rounded-lg shadow-md p-6">
-            <h3 className="text-white-xl font-semibold mb-3 flex items-center gap-2">
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
               <Calendar className="text-blue-600" />
               {selectedDate.toLocaleDateString('en-US', {
                 weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
@@ -352,10 +371,12 @@ return (
           </div>
         </div>
       </div>
+            {/* end of birthday */}
+
         {/* Selected Date: Work Anniversaries */}
         <div className='contain'>
         <div className="col-lg-4 mb-4">
-          <div className="bg-black rounded-lg shadow-md p-6">
+          <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
               <Calendar className="text-blue-600" />
               {selectedDate.toLocaleDateString('en-US', {
@@ -389,18 +410,20 @@ return (
             ) : (
               <div className="text-center py-8">
                 <div className="text-6xl mb-3">📅</div>
-                <p className="text-gray-500">No anniversaries on this date</p>
+                <p className="text-gray-500">No joiners on this date</p>
               </div>
             )}
           </div>
         </div>
       </div>
+              {/* end of work annivesary */}
+
         {/* Stats details  */}
         <div className='stats'>
         <div className="col-lg-4 mb-4">
-          <div className="bg-black rounded-lg shadow-md p-6">
-            <h4 className="text-white text-xl font-semibold mb-3">📊 Quick Stats</h4>
-            <div className="space-y-2 text-white">
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h4 className="text-lg font-semibold mb-3">📊 Quick Stats</h4>
+            <div className="space-y-2">
               <p className="text-sm">
                 Total Employees: <span className="font-bold text-blue-600">{employees.length}</span>
               </p>
@@ -420,8 +443,63 @@ return (
           </div>
         </div>
       </div>
+              {/*end of stats content*/}
+
     </div>
   </div>
+  
+  {/* enter the details and store to the data manually and automatic add  */}
+   
+  <div className='information'>
+  <h3 className='text-center-xl text-black'>ADD INFORMATION</h3>
+  <form onSubmit={handleAddEmployee} className="bg-white p-4 rounded shadow-md mb-4 max-w-md mx-auto">
+  <div className="mb-2">
+    <label className="block font-medium mb-1">ID : </label>
+    <input
+      type="text"
+      value={addEmployee.id}
+      onChange={(e) => setAddEmployee({ ...addEmployee, id: e.target.value })}
+      className="w-full p-2 border rounded"
+      required
+    />
+  </div>
+  <div className="mb-2">
+    <label className="block font-medium mb-1">Name : </label>
+    <input
+      type="text"
+      value={addEmployee.name}
+      onChange={(e) => setAddEmployee({ ...addEmployee, name: e.target.value })}
+      className="w-full p-2 border rounded"
+      required
+    />
+  </div>
+  <div className="mb-2">
+    <label className="block font-medium mb-1"> Date of Birthday : </label>
+    <input
+      type="date"
+      value={addEmployee.birthday}
+      onChange={(e) => setAddEmployee({ ...addEmployee, birthday: e.target.value })}
+      className="w-full p-2 border rounded"
+      required
+    />
+  </div>
+  <div className="mb-4">
+    <label className="block font-medium mb-1">Joining Date : </label>
+    <input
+      type="date"
+      value={addEmployee.joinDate}
+      onChange={(e) => setAddEmployee({ ...addEmployee, joinDate: e.target.value })}
+      className="w-full p-2 border rounded"
+      required
+    />
+  </div>
+  <button type="submit" onClick={fetchExcelFile} className="bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700">
+    Add Employee
+  </button>
+</form>
+
+</div>
+          {/* end of add employee */}
 </div>
 );
 };
