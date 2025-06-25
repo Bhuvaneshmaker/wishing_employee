@@ -37,7 +37,7 @@ const EmployeeBirthdayApp = () => {
       // To take the excel and get the data and details from the excel
   const fetchExcelFile = async () => {
     try {
-      const response = await fetch('./data/employee_detail.xlsx');
+      const response = await fetch('.src/data/employee_detail.xlsx');
       const arrayBuffer = await response.arrayBuffer();
       const workbook = XLSX.read(arrayBuffer, { type: 'array' });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
