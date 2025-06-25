@@ -27,7 +27,9 @@
   }
 }
 
-
+        .row h3{
+          color:white;
+        }
 
         .calendar-grid {
           border: 1px solid #e5e7eb;
