@@ -399,7 +399,7 @@ return (
         <div className='stats'>
         <div className="col-lg-4 mb-4">
           <div className="bg-black rounded-lg shadow-md p-6">
-            <h4 className="text-lg-white font-semibold mb-3">📊 Quick Stats</h4>
+            <h4 className="text-white-lg font-semibold mb-3">📊 Quick Stats</h4>
             <div className="space-y-2 text-white">
               <p className="text-sm">
                 Total Employees: <span className="font-bold text-blue-600">{employees.length}</span>
