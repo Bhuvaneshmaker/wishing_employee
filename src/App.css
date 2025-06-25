@@ -114,6 +114,7 @@
 
         @media (max-width: 768px) {
           .calendar-day {
+            color:white;
             min-height: 45px;
             padding: 4px;
             font-size: 14px;
